@@ -4,19 +4,23 @@ volumes:
 services:
   app:
     container_name: javadev
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
-    environment:     
-        POSTGRES_PASSWORD: P@ssw0rd!
-        POSTGRES_USER: localdbuser
-        POSTGRES_DB: localdb
-        POSTGRES_HOSTNAME: postgresdb
+    environment:
+      POSTGRES_PASSWORD: P@ssw0rd!
+      POSTGRES_USER: localdbuser
+      POSTGRES_DB: localdb
+      POSTGRES_HOSTNAME: postgresdb
 
     volumes:
-      - ../..:/workspaces:cached      
+      - ..:/workspaces/learning-jdbc-2725172:cached
     command: sleep infinity
-    network_mode: service:db
+    depends_on:
+      db:
+        condition: service_started
+    networks:
+      - default
   db:
     container_name: postgresdb
     image: postgres:latest
@@ -27,3 +31,5 @@ services:
       POSTGRES_PASSWORD: P@ssw0rd!
       POSTGRES_USER: localdbuser
       POSTGRES_DB: localdb
+    networks:
+      - default
