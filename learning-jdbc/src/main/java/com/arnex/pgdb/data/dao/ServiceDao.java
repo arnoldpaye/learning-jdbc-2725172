@@ -14,10 +14,13 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import javax.swing.text.html.parser.Entity;
+
 public class ServiceDao implements Dao<Service, UUID> {
   private static final Logger LOGGER = Logger.getLogger(ServiceDao.class.getName());
   private static final String GET_ALL = "select service_id, name, price from wisdom.services";
   private static final String GET_BY_ID = "select service_id, name, price from wisdom.services where service_id = ?";
+  private static final String CREATE = "insert into wisdom.services (service_id, name, price) values (?,?,?)";
 
   @Override
   public List<Service> getAll() {
@@ -34,8 +37,30 @@ public class ServiceDao implements Dao<Service, UUID> {
 
   @Override
   public Service create(Service entity) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'create'");
+    UUID serviceId = UUID.randomUUID();
+    Connection connection = DatabaseUtils.gConnection();
+    try {
+      connection.setAutoCommit(false);
+      PreparedStatement statement = connection.prepareStatement(CREATE);
+      statement.setObject(1, serviceId);
+      statement.setString(2, entity.getName());
+      statement.setObject(3, entity.getPrice());
+      statement.execute();
+      connection.commit();
+      statement.close();
+    } catch (SQLException e) {
+      try {
+        connection.rollback();
+      } catch (SQLException sqle) {
+        DatabaseUtils.handleSqlException("ServiceDao.create.rollback", e, LOGGER);
+      }
+      DatabaseUtils.handleSqlException("ServiceDao.create", e, LOGGER);
+    }
+    Optional<Service> service = this.getOne(serviceId);
+    if (!service.isPresent()) {
+      return null;
+    }
+    return service.get();
   }
 
   @Override
