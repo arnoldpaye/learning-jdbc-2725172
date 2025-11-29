@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.arnex.pgdb.data.dao.CustomerDao;
+import com.arnex.pgdb.data.dao.ServiceDao;
 import com.arnex.pgdb.data.dao.SimpleProductDao;
 import com.arnex.pgdb.data.entity.Customer;
 
@@ -56,10 +57,17 @@ public class App {
          * System.out.println("\n*** DELETE ***\n");
          */
 
-        System.out.println("\n\n*** SIMPLE PRODUCT ***");
-        SimpleProductDao simpleProductDao = new SimpleProductDao();
-        UUID productId = simpleProductDao.createProduct("foobarbaz" + System.currentTimeMillis(), new BigDecimal(45.67),
-                "Jaloo");
-        System.out.println(productId);
+        /*
+         * System.out.println("\n\n*** SIMPLE PRODUCT ***");
+         * SimpleProductDao simpleProductDao = new SimpleProductDao();
+         * UUID productId = simpleProductDao.createProduct("foobarbaz" +
+         * System.currentTimeMillis(), new BigDecimal(45.67),
+         * "Jaloo");
+         * System.out.println(productId);
+         */
+
+        System.out.println("\n\n*** LIMIT ***");
+        ServiceDao serviceDao = new ServiceDao();
+        serviceDao.getAllLimit(2).forEach(System.out::println);
     }
 }
