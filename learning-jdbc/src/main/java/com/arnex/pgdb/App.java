@@ -66,8 +66,17 @@ public class App {
          * System.out.println(productId);
          */
 
-        System.out.println("\n\n*** LIMIT ***");
-        ServiceDao serviceDao = new ServiceDao();
-        serviceDao.getAllLimit(2).forEach(System.out::println);
+        /*
+         * System.out.println("\n\n*** LIMIT ***");
+         * ServiceDao serviceDao = new ServiceDao();
+         * serviceDao.getAllLimit(2).forEach(System.out::println);
+         */
+
+        CustomerDao customerDao = new CustomerDao();
+        System.out.println("\\*** PAGED");
+        for (int i = 1; i < 11; i++) {
+            System.out.println("Page number: " + i);
+            customerDao.getAllPaged(i, 10).forEach(System.out::println);
+        }
     }
 }
