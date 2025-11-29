@@ -13,9 +13,9 @@ public class DatabaseUtils {
   private static final String exceptionFormat = "exception in %s, message: %s, code: %s";
   private static Connection connection;
 
-  public static Connection gConnection() {
+  public static Connection getConnection() {
     if (connection == null) {
-      synchronized(DatabaseUtils.class) {
+      synchronized (DatabaseUtils.class) {
         if (connection == null) {
           try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);

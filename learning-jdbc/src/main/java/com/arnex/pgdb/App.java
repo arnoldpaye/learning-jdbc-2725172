@@ -1,9 +1,12 @@
 package com.arnex.pgdb;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.arnex.pgdb.data.dao.CustomerDao;
+import com.arnex.pgdb.data.dao.SimpleProductDao;
 import com.arnex.pgdb.data.entity.Customer;
 
 public class App {
@@ -29,25 +32,34 @@ public class App {
          * System.out.println("\n*** DELETE ***\n");
          */
 
-        CustomerDao customerDao = new CustomerDao();
-        List<Customer> customers = customerDao.getAll();
-        System.out.println("*** CUSTOMERS ***");
-        System.out.println("\n*** GET_ALL ***");
-        customers.forEach(System.out::println);
-        Optional<Customer> customer = customerDao.getOne(customers.get(0).getCustomerId());
-        System.out.println("\n*** GET ONE ***\n" + customer.get());
-        Customer newCustomer = new Customer();
-        newCustomer.setFirstName("Arnold");
-        newCustomer.setLastName("Paye");
-        newCustomer.setEmail("arnoldpayet@gmail.com" + System.currentTimeMillis());
-        newCustomer.setPhone("(591) 777665552");
-        newCustomer.setAddress("Here and there");
-        newCustomer = customerDao.create(newCustomer);
-        System.out.println("\n*** CREATE ***\n" + newCustomer);
-        newCustomer.setAddress("Another place");
-        newCustomer = customerDao.update(newCustomer);
-        System.out.println("\n*** UPDATE ***\n" + newCustomer);
-        customerDao.delete(newCustomer.getCustomerId());
-        System.out.println("\n*** DELETE ***\n");
+        /*
+         * CustomerDao customerDao = new CustomerDao();
+         * List<Customer> customers = customerDao.getAll();
+         * System.out.println("*** CUSTOMERS ***");
+         * System.out.println("\n*** GET_ALL ***");
+         * customers.forEach(System.out::println);
+         * Optional<Customer> customer =
+         * customerDao.getOne(customers.get(0).getCustomerId());
+         * System.out.println("\n*** GET ONE ***\n" + customer.get());
+         * Customer newCustomer = new Customer();
+         * newCustomer.setFirstName("Arnold");
+         * newCustomer.setLastName("Paye");
+         * newCustomer.setEmail("arnoldpayet@gmail.com" + System.currentTimeMillis());
+         * newCustomer.setPhone("(591) 777665552");
+         * newCustomer.setAddress("Here and there");
+         * newCustomer = customerDao.create(newCustomer);
+         * System.out.println("\n*** CREATE ***\n" + newCustomer);
+         * newCustomer.setAddress("Another place");
+         * newCustomer = customerDao.update(newCustomer);
+         * System.out.println("\n*** UPDATE ***\n" + newCustomer);
+         * customerDao.delete(newCustomer.getCustomerId());
+         * System.out.println("\n*** DELETE ***\n");
+         */
+
+        System.out.println("\n\n*** SIMPLE PRODUCT ***");
+        SimpleProductDao simpleProductDao = new SimpleProductDao();
+        UUID productId = simpleProductDao.createProduct("foobarbaz" + System.currentTimeMillis(), new BigDecimal(45.67),
+                "Jaloo");
+        System.out.println(productId);
     }
 }

@@ -25,7 +25,7 @@ public class CustomerDao implements Dao<Customer, UUID> {
   @Override
   public List<Customer> getAll() {
     List<Customer> customers = new ArrayList<>();
-    Connection connection = DatabaseUtils.gConnection();
+    Connection connection = DatabaseUtils.getConnection();
     try (Statement statement = connection.createStatement()) {
       ResultSet rs = statement.executeQuery(GET_ALL);
       customers = this.processResultSet(rs);
@@ -38,7 +38,7 @@ public class CustomerDao implements Dao<Customer, UUID> {
   @Override
   public Customer create(Customer entity) {
     UUID customerId = UUID.randomUUID();
-    Connection connection = DatabaseUtils.gConnection();
+    Connection connection = DatabaseUtils.getConnection();
     try {
       connection.setAutoCommit(false);
       PreparedStatement statement = connection.prepareStatement(CREATE);
@@ -68,7 +68,7 @@ public class CustomerDao implements Dao<Customer, UUID> {
 
   @Override
   public Optional<Customer> getOne(UUID id) {
-    try (PreparedStatement statement = DatabaseUtils.gConnection().prepareStatement(GET_BY_ID)) {
+    try (PreparedStatement statement = DatabaseUtils.getConnection().prepareStatement(GET_BY_ID)) {
       statement.setObject(1, id);
       ResultSet rs = statement.executeQuery();
       List<Customer> customers = this.processResultSet(rs);
@@ -84,7 +84,7 @@ public class CustomerDao implements Dao<Customer, UUID> {
 
   @Override
   public Customer update(Customer entity) {
-    Connection connection = DatabaseUtils.gConnection();
+    Connection connection = DatabaseUtils.getConnection();
     try {
       connection.setAutoCommit(false);
       PreparedStatement statement = connection.prepareStatement(UPDATE);
@@ -110,7 +110,7 @@ public class CustomerDao implements Dao<Customer, UUID> {
 
   @Override
   public void delete(UUID id) {
-    Connection connection = DatabaseUtils.gConnection();
+    Connection connection = DatabaseUtils.getConnection();
     try {
       connection.setAutoCommit(false);
       PreparedStatement statement = connection.prepareStatement(DELETE);

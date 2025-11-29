@@ -25,7 +25,7 @@ public class ServiceDao implements Dao<Service, UUID> {
   @Override
   public List<Service> getAll() {
     List<Service> services = new ArrayList<>();
-    Connection connection = DatabaseUtils.gConnection();
+    Connection connection = DatabaseUtils.getConnection();
     try (Statement statement = connection.createStatement()) {
       ResultSet rs = statement.executeQuery(GET_ALL);
       services = this.processResultSet(rs);
@@ -38,7 +38,7 @@ public class ServiceDao implements Dao<Service, UUID> {
   @Override
   public Service create(Service entity) {
     UUID serviceId = UUID.randomUUID();
-    Connection connection = DatabaseUtils.gConnection();
+    Connection connection = DatabaseUtils.getConnection();
     try {
       connection.setAutoCommit(false);
       PreparedStatement statement = connection.prepareStatement(CREATE);
@@ -65,7 +65,7 @@ public class ServiceDao implements Dao<Service, UUID> {
 
   @Override
   public Optional<Service> getOne(UUID id) {
-    try (PreparedStatement statement = DatabaseUtils.gConnection().prepareStatement(GET_BY_ID)) {
+    try (PreparedStatement statement = DatabaseUtils.getConnection().prepareStatement(GET_BY_ID)) {
       statement.setObject(1, id);
       ResultSet rs = statement.executeQuery();
       List<Service> services = this.processResultSet(rs);
@@ -81,7 +81,7 @@ public class ServiceDao implements Dao<Service, UUID> {
 
   @Override
   public Service update(Service entity) {
-    Connection connection = DatabaseUtils.gConnection();
+    Connection connection = DatabaseUtils.getConnection();
     try {
       connection.setAutoCommit(false);
       PreparedStatement statement = connection.prepareStatement(UPDATE);
@@ -104,7 +104,7 @@ public class ServiceDao implements Dao<Service, UUID> {
 
   @Override
   public void delete(UUID id) {
-    Connection connection = DatabaseUtils.gConnection();
+    Connection connection = DatabaseUtils.getConnection();
     try {
       connection.setAutoCommit(false);
       PreparedStatement statement = connection.prepareStatement(DELETE);
